@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Saurav Bhukte — Full Stack Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;500&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #060c18;
+    --bg2: #0b1425;
+    --bg3: #0f1d35;
+    --mint: #00ffa3;
+    --amber: #f5a51a;
+    --text: #d6e4f7;
+    --muted: #6e8caa;
+    --border: rgba(0,255,163,0.12);
+    --border2: rgba(255,255,255,0.06);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  /* — NOISE TEXTURE — */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* — GRID LINES — */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,255,163,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,163,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* — NAV — */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(6,12,24,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border2);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    color: var(--mint);
+    letter-spacing: 0.1em;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--mint); }
+
+  /* — SECTIONS — */
+  section { position: relative; z-index: 1; }
+
+  /* — HERO — */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 4rem;
+    padding-top: 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--mint);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hero-tag::before {
+    content: '';
+    display: inline-block;
+    width: 28px;
+    height: 1px;
+    background: var(--mint);
+  }
+
+  .hero-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 12vw, 10rem);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-name span {
+    color: var(--mint);
+  }
+
+  .hero-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    color: var(--amber);
+    margin-bottom: 1.8rem;
+    min-height: 1.5em;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background: var(--amber);
+    margin-left: 2px;
+    vertical-align: middle;
+    animation: blink 0.9s step-end infinite;
+  }
+
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .hero-desc {
+    max-width: 560px;
+    color: var(--muted);
+    font-size: 1.05rem;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    background: var(--mint);
+    color: #060c18;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-2px); }
+
+  .btn-outline {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    border: 1px solid var(--mint);
+    color: var(--mint);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .btn-outline:hover { background: rgba(0,255,163,0.07); transform: translateY(-2px); }
+
+  .hero-stats {
+    position: absolute;
+    right: 4rem;
+    bottom: 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: right;
+  }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    color: #fff;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .scroll-line {
+    width: 40px;
+    height: 1px;
+    background: var(--muted);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scroll-line::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: var(--mint);
+    animation: scanline 2s ease-in-out infinite;
+  }
+
+  @keyframes scanline { 0% { left: -100%; } 100% { left: 100%; } }
+
+  /* — SECTION LAYOUT — */
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 7rem 4rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--mint);
+    letter-spacing: 0.15em;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    color: #fff;
+    letter-spacing: 0.03em;
+    line-height: 1;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* — ABOUT — */
+  #about { background: var(--bg2); }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .about-text p {
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+    font-size: 1.05rem;
+    font-weight: 300;
+  }
+
+  .about-text strong { color: var(--text); font-weight: 600; }
+
+  .about-links {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .about-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .about-link:hover { color: var(--mint); }
+
+  .about-link-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--mint);
+    flex-shrink: 0;
+  }
+
+  .about-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .info-card {
+    border: 1px solid var(--border2);
+    padding: 1.5rem;
+    position: relative;
+  }
+
+  .info-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--mint);
+  }
+
+  .info-card-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--mint);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .info-card-value {
+    font-size: 1rem;
+    color: var(--text);
+    font-weight: 300;
+  }
+
+  /* — SKILLS — */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .skill-category {
+    border: 1px solid var(--border2);
+    padding: 2rem;
+    transition: border-color 0.3s;
+  }
+
+  .skill-category:hover { border-color: var(--border); }
+
+  .skill-cat-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--amber);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .skill-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.3rem 0.75rem;
+    border: 1px solid var(--border);
+    color: var(--text);
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+  }
+
+  .skill-tag:hover {
+    background: rgba(0,255,163,0.06);
+    border-color: var(--mint);
+    color: var(--mint);
+  }
+
+  .skill-tag.primary {
+    border-color: rgba(0,255,163,0.35);
+    color: var(--mint);
+  }
+
+  /* — EXPERIENCE — */
+  #experience { background: var(--bg2); }
+
+  .exp-block {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 3rem;
+    padding: 3rem 0;
+    border-bottom: 1px solid var(--border2);
+    position: relative;
+  }
+
+  .exp-block:last-child { border-bottom: none; }
+
+  .exp-meta {
+    padding-top: 0.25rem;
+  }
+
+  .exp-period {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--mint);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+
+  .exp-company {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    color: #fff;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    margin-bottom: 0.3rem;
+  }
+
+  .exp-location {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  .exp-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--amber);
+    letter-spacing: 0.06em;
+    margin-bottom: 1.5rem;
+  }
+
+  .exp-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .exp-bullets li {
+    display: flex;
+    gap: 0.75rem;
+    color: var(--muted);
+    font-size: 0.98rem;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  .exp-bullets li::before {
+    content: '▸';
+    color: var(--mint);
+    flex-shrink: 0;
+    margin-top: 0.05em;
+    font-size: 0.8rem;
+  }
+
+  /* — PROJECTS — */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    border: 1px solid var(--border2);
+    padding: 2.2rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+    cursor: pointer;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 0% 0%, rgba(0,255,163,0.04) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .project-card:hover {
+    border-color: rgba(0,255,163,0.3);
+    transform: translateY(-4px);
+  }
+
+  .project-card:hover::before { opacity: 1; }
+
+  .project-card.featured {
+    grid-column: span 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    align-items: center;
+  }
+
+  .project-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--mint);
+    letter-spacing: 0.15em;
+    margin-bottom: 1rem;
+  }
+
+  .project-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: #fff;
+    letter-spacing: 0.04em;
+    margin-bottom: 1rem;
+  }
+
+  .project-desc {
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.65;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .stack-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    padding: 0.2rem 0.6rem;
+    background: rgba(245,165,26,0.08);
+    border: 1px solid rgba(245,165,26,0.2);
+    color: var(--amber);
+    letter-spacing: 0.05em;
+  }
+
+  .project-highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding-left: 0.5rem;
+    border-left: 1px solid var(--border);
+  }
+
+  .highlight-item {
+    font-size: 0.88rem;
+    color: var(--muted);
+    font-weight: 300;
+    display: flex;
+    gap: 0.6rem;
+  }
+
+  .highlight-item::before {
+    content: '→';
+    color: var(--mint);
+    flex-shrink: 0;
+  }
+
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--mint);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+    transition: gap 0.2s;
+  }
+
+  .project-link:hover { gap: 0.7rem; }
+
+  /* — EDUCATION — */
+  #education { background: var(--bg2); }
+
+  .edu-block {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .edu-year {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--mint);
+    letter-spacing: 0.12em;
+    padding-top: 0.3rem;
+  }
+
+  .edu-degree {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: #fff;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    margin-bottom: 0.4rem;
+  }
+
+  .edu-institution {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--amber);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.6rem;
+  }
+
+  .edu-detail {
+    font-size: 0.95rem;
+    color: var(--muted);
+    font-weight: 300;
+    margin-bottom: 1.2rem;
+  }
+
+  .coursework {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1rem;
+  }
+
+  .course-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    padding: 0.2rem 0.65rem;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* — CERT — */
+  .cert-block {
+    margin-top: 3rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--border2);
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .cert-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--mint);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .cert-name {
+    font-size: 1.1rem;
+    color: var(--text);
+    font-weight: 300;
+    margin-bottom: 0.3rem;
+  }
+
+  .cert-provider {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+
+  /* — CONTACT — */
+  #contact {
+    position: relative;
+    overflow: hidden;
+  }
+
+  #contact::before {
+    content: 'CONTACT';
+    position: absolute;
+    bottom: -2rem;
+    right: -1rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18vw;
+    color: rgba(0,255,163,0.018);
+    letter-spacing: 0.05em;
+    pointer-events: none;
+    z-index: 0;
+    white-space: nowrap;
+  }
+
+  .contact-inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .contact-heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    color: #fff;
+    line-height: 0.95;
+    letter-spacing: 0.03em;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-heading span { color: var(--mint); }
+
+  .contact-tagline {
+    color: var(--muted);
+    font-size: 1rem;
+    font-weight: 300;
+    max-width: 380px;
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    padding: 1rem 1.5rem;
+    border: 1px solid var(--border2);
+    transition: border-color 0.25s, background 0.25s;
+  }
+
+  .contact-link:hover {
+    border-color: var(--mint);
+    background: rgba(0,255,163,0.04);
+  }
+
+  .contact-link-icon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--mint);
+    letter-spacing: 0.1em;
+    width: 60px;
+    flex-shrink: 0;
+  }
+
+  .contact-link-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text);
+    letter-spacing: 0.04em;
+  }
+
+  /* — FOOTER — */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 2rem 4rem;
+    border-top: 1px solid var(--border2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  /* — SCROLL ANIMATIONS — */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.75s ease, transform 0.75s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* — RESPONSIVE — */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 2rem; }
+    .nav-links { gap: 1.5rem; }
+    #hero { padding: 0 2rem; padding-top: 5rem; }
+    .hero-stats { right: 2rem; }
+    .section-inner { padding: 5rem 2rem; }
+    .about-grid, .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .exp-block, .edu-block, .cert-block { grid-template-columns: 1fr; gap: 1rem; }
+    .skills-grid { grid-template-columns: 1fr 1fr; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .project-card.featured { grid-column: span 1; display: block; }
+    .project-highlights { border-left: none; border-top: 1px solid var(--border); padding-left: 0; padding-top: 1rem; margin-top: 1rem; }
+  }
+
+  @media (max-width: 600px) {
+    .hero-name { font-size: 4rem; }
+    .hero-stats { display: none; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">SB</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Work</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-tag">Full Stack Developer</div>
+  <h1 class="hero-name">SAURAV<br/><span>BHUKTE</span></h1>
+  <p class="hero-role" id="typewriter"><span class="cursor"></span></p>
+  <p class="hero-desc">
+    Building scalable web products from storefronts to healthcare platforms — with clean architecture, real-world integrations, and a thing for zero regression incidents.
+  </p>
+  <div class="hero-cta">
+    <a href="#projects" class="btn-primary">View Projects</a>
+    <a href="#contact" class="btn-outline">Get In Touch</a>
+  </div>
+
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">4+</div>
+      <div class="stat-label">Production Features</div>
+    </div>
+    <div>
+      <div class="stat-num">3</div>
+      <div class="stat-label">Full-Stack Projects</div>
+    </div>
+    <div>
+      <div class="stat-num">0</div>
+      <div class="stat-label">Regression Incidents</div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll to explore
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">ABOUT</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="about-grid reveal">
+      <div class="about-text">
+        <p>I'm a <strong>Full Stack Developer (MERN)</strong> with enterprise experience at Cognizant, where I shipped production features on a large-scale SAP Commerce Cloud storefront used across multiple regions.</p>
+        <p>My work spans <strong>Angular storefronts</strong>, OCC/REST API integrations, and independently-built full-stack apps — including a payment-enabled e-learning platform and a healthcare records system with real-time messaging.</p>
+        <p>I care about component architecture, clean error boundaries, and delivering features that stay stable. <strong>Zero regression incidents</strong> in all owned modules across my time at Cognizant.</p>
+        <p>Currently seeking a <strong>mid-level Full Stack or Frontend</strong> role focused on scalable product architecture and measurable impact.</p>
+        <div class="about-links">
+          <a href="mailto:sauravbhukte2308@mail.com" class="about-link">
+            <div class="about-link-dot"></div>
+            sauravbhukte2308@mail.com
+          </a>
+          <a href="https://linkedin.com/in/saurav-bhukte-ba32a0229" class="about-link" target="_blank">
+            <div class="about-link-dot"></div>
+            linkedin.com/in/saurav-bhukte-ba32a0229
+          </a>
+          <a href="https://github.com/sauravbhukte" class="about-link" target="_blank">
+            <div class="about-link-dot"></div>
+            github.com/sauravbhukte
+          </a>
+        </div>
+      </div>
+      <div class="about-info">
+        <div class="info-card">
+          <div class="info-card-label">Location</div>
+          <div class="info-card-value">Nagpur, India</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">Current Role</div>
+          <div class="info-card-value">Full Stack Developer at Cognizant</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">Primary Stack</div>
+          <div class="info-card-value">MERN — React, Node, Express, MongoDB</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">Enterprise Stack</div>
+          <div class="info-card-value">Angular · SAP Spartacus · SAP Commerce Cloud</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">Available For</div>
+          <div class="info-card-value">Mid-level Full Stack / Frontend roles</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">SKILLS</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-category reveal">
+        <div class="skill-cat-title">Core Proficient</div>
+        <div class="skill-tags">
+          <span class="skill-tag primary">JavaScript ES6+</span>
+          <span class="skill-tag primary">ReactJS</span>
+          <span class="skill-tag primary">Next.js</span>
+          <span class="skill-tag primary">Node.js</span>
+          <span class="skill-tag primary">Express.js</span>
+          <span class="skill-tag primary">MongoDB</span>
+          <span class="skill-tag primary">REST APIs</span>
+          <span class="skill-tag primary">Tailwind CSS</span>
+          <span class="skill-tag primary">HTML5 / CSS3</span>
+        </div>
+      </div>
+      <div class="skill-category reveal" style="transition-delay: 0.1s;">
+        <div class="skill-cat-title">Frontend & Enterprise</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Angular</span>
+          <span class="skill-tag">SAP Spartacus</span>
+          <span class="skill-tag">TypeScript</span>
+          <span class="skill-tag">Redux</span>
+          <span class="skill-tag">Responsive Design</span>
+          <span class="skill-tag">Component Architecture</span>
+          <span class="skill-tag">Lazy Loading</span>
+          <span class="skill-tag">Code Splitting</span>
+        </div>
+      </div>
+      <div class="skill-category reveal" style="transition-delay: 0.2s;">
+        <div class="skill-cat-title">Backend & Tools</div>
+        <div class="skill-tags">
+          <span class="skill-tag">JWT Auth</span>
+          <span class="skill-tag">OCC APIs</span>
+          <span class="skill-tag">SAP Commerce Cloud</span>
+          <span class="skill-tag">Webhooks</span>
+          <span class="skill-tag">Cloudinary</span>
+          <span class="skill-tag">SQL</span>
+          <span class="skill-tag">Git</span>
+          <span class="skill-tag">Postman</span>
+          <span class="skill-tag">Agile / Scrum</span>
+          <span class="skill-tag">DSA</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">EXPERIENCE</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="exp-block reveal">
+      <div class="exp-meta">
+        <div class="exp-period">Feb 2025 — Mar 2026</div>
+        <div class="exp-company">COGNIZANT</div>
+        <div class="exp-location">Nagpur, India</div>
+      </div>
+      <div>
+        <div class="exp-role">Full Stack Developer</div>
+        <ul class="exp-bullets">
+          <li>Delivered 4+ e-commerce features — dynamic product listing pages, cart management, and multi-step checkout — on SAP Commerce Cloud using Angular and SAP Spartacus. Improved page performance via lazy-loaded routing and component-level code splitting.</li>
+          <li>Integrated storefront components with OCC/REST APIs across 3 backend services, implementing structured error handling that eliminated unhandled promise rejections and reduced UI failure incidents across all owned modules.</li>
+          <li>Engineered reusable Angular components following single-responsibility principles, reducing code duplication across the storefront and speeding up feature additions for the wider team.</li>
+          <li>Collaborated within an Agile team of 8 across bi-weekly sprints, code reviews, and daily standups — delivering all assigned tasks on schedule with zero regression incidents in owned feature areas.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">PROJECTS</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="projects-grid">
+
+      <!-- FEATURED: Med Wallet -->
+      <div class="project-card featured reveal">
+        <div>
+          <div class="project-num">01 — Healthcare</div>
+          <h3 class="project-name">MED WALLET</h3>
+          <p class="project-desc">
+            A full-stack healthcare records platform enabling patients to securely store, manage, and share medical records digitally. Features role-based access for patients and doctors, real-time messaging, and appointment management.
+          </p>
+          <div class="project-stack">
+            <span class="stack-pill">ReactJS</span>
+            <span class="stack-pill">Node.js</span>
+            <span class="stack-pill">Express.js</span>
+            <span class="stack-pill">MongoDB</span>
+            <span class="stack-pill">JWT</span>
+            <span class="stack-pill">Cloudinary</span>
+          </div>
+        </div>
+        <div class="project-highlights">
+          <div class="highlight-item">Role-based access control with JWT-secured API routes throughout</div>
+          <div class="highlight-item">MongoDB schemas optimised for sub-100ms record retrieval under concurrent reads</div>
+          <div class="highlight-item">Real-time messaging interface for doctor-patient communication</div>
+          <div class="highlight-item">Cloudinary integration for PDF and image upload — prescription & test reports — without self-hosted infrastructure</div>
+          <div class="highlight-item">Appointment management system built end-to-end</div>
+        </div>
+      </div>
+
+      <!-- Study Notion -->
+      <div class="project-card reveal">
+        <div class="project-num">02 — EdTech</div>
+        <h3 class="project-name">STUDY NOTION</h3>
+        <p class="project-desc">
+          Full-stack e-learning platform supporting instructor and student roles with course creation, live lecture recording, progress tracking, and payment-gated enrollment.
+        </p>
+        <div class="project-stack">
+          <span class="stack-pill">React</span>
+          <span class="stack-pill">Tailwind CSS</span>
+          <span class="stack-pill">Node.js</span>
+          <span class="stack-pill">Express.js</span>
+          <span class="stack-pill">MongoDB</span>
+          <span class="stack-pill">Redux</span>
+          <span class="stack-pill">RazorPay</span>
+        </div>
+        <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.65rem;">
+          <div class="highlight-item">RazorPay + webhook handling — zero missed enrollment events in end-to-end testing</div>
+          <div class="highlight-item">Complex Redux state: video playback, course selection, user sessions</div>
+          <div class="highlight-item">Fully responsive, accessible UI with Tailwind CSS</div>
+        </div>
+        <div style="margin-top: 1.5rem;">
+          <a href="#" class="project-link">View Live →</a>
+        </div>
+      </div>
+
+      <!-- BookMyShow -->
+      <div class="project-card reveal" style="transition-delay: 0.1s;">
+        <div class="project-num">03 — Booking</div>
+        <h3 class="project-name">BOOKMYSHOW CLONE</h3>
+        <p class="project-desc">
+          Replicated core BookMyShow flows including movie browsing, theatre-wise showtime selection, and an interactive seat map with real-time seat locking to prevent double-booking race conditions.
+        </p>
+        <div class="project-stack">
+          <span class="stack-pill">React</span>
+          <span class="stack-pill">Tailwind CSS</span>
+          <span class="stack-pill">JavaScript</span>
+          <span class="stack-pill">Node.js</span>
+        </div>
+        <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.65rem;">
+          <div class="highlight-item">Real-time seat locking to prevent concurrent double-booking</div>
+          <div class="highlight-item">Multi-step booking state with strict data consistency checks</div>
+          <div class="highlight-item">Edge cases eliminated around concurrent seat selection</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">EDUCATION</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="edu-block reveal">
+      <div class="edu-year">Aug 2021 — Jul 2025</div>
+      <div>
+        <h3 class="edu-degree">BACHELOR OF TECHNOLOGY<br/>IN COMPUTER ENGINEERING</h3>
+        <div class="edu-institution">St. Vincent College of Engineering &amp; Technology, Nagpur</div>
+        <div class="edu-detail">CGPA: 7.16 / 10.0</div>
+        <div class="coursework">
+          <span class="course-tag">Data Structures &amp; Algorithms</span>
+          <span class="course-tag">Object-Oriented Programming</span>
+          <span class="course-tag">Database Management Systems</span>
+          <span class="course-tag">Operating Systems</span>
+          <span class="course-tag">Computer Networks</span>
+          <span class="course-tag">Web Technologies</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cert-block reveal">
+      <div class="cert-label">Certification<br/>2024</div>
+      <div>
+        <div class="cert-name">MERN Stack Web Development</div>
+        <div class="cert-provider">CodeHelp — React, Node.js, Express.js, MongoDB, JWT Auth, REST APIs</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2 class="section-title">CONTACT</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="contact-inner">
+      <div class="reveal">
+        <h2 class="contact-heading">LET'S<br/>BUILD<br/><span>SOMETHING.</span></h2>
+        <p class="contact-tagline">
+          Open to mid-level Full Stack and Frontend roles. I respond fast and show up prepared.
+        </p>
+        <a href="mailto:sauravbhukte2308@mail.com" class="btn-primary">Send Email →</a>
+      </div>
+      <div class="contact-links reveal" style="transition-delay: 0.15s;">
+        <a href="mailto:sauravbhukte2308@mail.com" class="contact-link">
+          <div class="contact-link-icon">EMAIL</div>
+          <div class="contact-link-value">sauravbhukte2308@mail.com</div>
+        </a>
+        <a href="tel:+918177952858" class="contact-link">
+          <div class="contact-link-icon">PHONE</div>
+          <div class="contact-link-value">+91 8177 952 858</div>
+        </a>
+        <a href="https://linkedin.com/in/saurav-bhukte-ba32a0229" target="_blank" class="contact-link">
+          <div class="contact-link-icon">LINKEDIN</div>
+          <div class="contact-link-value">saurav-bhukte-ba32a0229</div>
+        </a>
+        <a href="https://github.com/sauravbhukte" target="_blank" class="contact-link">
+          <div class="contact-link-icon">GITHUB</div>
+          <div class="contact-link-value">github.com/sauravbhukte</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>Saurav Bhukte &nbsp;·&nbsp; Full Stack Developer &nbsp;·&nbsp; Nagpur, India</span>
+</footer>
+
+<script>
+  // Typewriter
+  const roles = [
+    'MERN Stack Developer',
+    'Angular + SAP Spartacus',
+    'Full Stack Engineer',
+    'Frontend Architect',
+  ];
+  let ri = 0, ci = 0, deleting = false;
+  const el = document.getElementById('typewriter');
+
+  function type() {
+    const word = roles[ri];
+    if (!deleting) {
+      ci++;
+      el.innerHTML = word.slice(0, ci) + '<span class="cursor"></span>';
+      if (ci === word.length) {
+        deleting = true;
+        setTimeout(type, 1600);
+        return;
+      }
+    } else {
+      ci--;
+      el.innerHTML = word.slice(0, ci) + '<span class="cursor"></span>';
+      if (ci === 0) {
+        deleting = false;
+        ri = (ri + 1) % roles.length;
+      }
+    }
+    setTimeout(type, deleting ? 45 : 80);
+  }
+  type();
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Nav active link highlight
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 200) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--mint)' : '';
+    });
+  });
+</script>
+</body>
+</html>
